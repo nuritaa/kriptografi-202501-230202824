@@ -56,7 +56,9 @@ if __name__ == "__main__":
 Hasil Eksekusi :
 
 
-![Hasil Eksekusi](screenshots/foto kripto.png).
+
+
+![Hasil Eksekusi](screenshots/hasilkripto.png)
 
 
 ## 7. Jawaban Pertanyaan
