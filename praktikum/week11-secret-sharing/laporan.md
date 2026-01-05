@@ -1,20 +1,24 @@
 # Laporan Praktikum Kriptografi
-Minggu ke-: X  
-Topik: [judul praktikum]  
-Nama: [Nama Mahasiswa]  
-NIM: [NIM Mahasiswa]  
-Kelas: [Kelas]  
+Minggu ke-: 11 
+Topik: secret sharing 
+Nama: nurita ahadhini  
+NIM: 230202824 
+Kelas: 5IKRA 
 
 ---
 
 ## 1. Tujuan
-(Tuliskan tujuan pembelajaran praktikum sesuai modul.)
+1.Menjelaskan konsep Shamir Secret Sharing (SSS).
+2.Melakukan simulasi pembagian rahasia ke beberapa pihak menggunakan skema SSS.
+3.Menganalisis keamanan skema distribusi rahasia.
+
 
 ---
 
 ## 2. Dasar Teori
-(Ringkas teori relevan (cukup 2–3 paragraf).  
-Contoh: definisi cipher klasik, konsep modular aritmetika, dll.  )
+Shamir’s Secret Sharing adalah metode untuk membagi sebuah rahasia menjadi beberapa bagian, sehingga rahasia tersebut tidak bisa diketahui oleh satu orang saja. Rahasia asli hanya bisa dipulihkan jika sejumlah bagian minimum (misalnya 3 dari 5 bagian) digabungkan. Jika jumlah bagian yang dikumpulkan kurang dari batas tersebut, rahasia tetap tidak bisa ditebak.
+
+Dengan cara ini, keamanan jadi lebih tinggi karena tidak ada satu pihak yang memegang rahasia sepenuhnya. Shamir’s Secret Sharing sering digunakan untuk menyimpan kunci penting, sistem keamanan, atau data sensitif agar tetap aman meskipun sebagian bagian bocor atau hilang.
 
 ---
 
@@ -27,69 +31,74 @@ Contoh: definisi cipher klasik, konsep modular aritmetika, dll.  )
 ---
 
 ## 4. Langkah Percobaan
-(Tuliskan langkah yang dilakukan sesuai instruksi.  
-Contoh format:
+
 1. Membuat file `caesar_cipher.py` di folder `praktikum/week2-cryptosystem/src/`.
 2. Menyalin kode program dari panduan praktikum.
-3. Menjalankan program dengan perintah `python caesar_cipher.py`.)
+3. Menjalankan program dengan perintah `python caesar_cipher.py`.
 
 ---
 
 ## 5. Source Code
-(Salin kode program utama yang dibuat atau dimodifikasi.  
-Gunakan blok kode:
+from secrets import randbelow
 
-```python
-# contoh potongan kode
-def encrypt(text, key):
-    return ...
-```
-)
+P = 208351617316091241234326746312124448251235562226470491514186331217050270460481
+
+def split_secret(secret, k, n):
+    secret = int.from_bytes(secret.encode(), 'big')
+    coeffs = [secret] + [randbelow(P) for _ in range(k - 1)]
+    shares = []
+    for i in range(1, n + 1):
+        y = sum(coeffs[j] * pow(i, j, P) for j in range(k)) % P
+        shares.append((i, y))
+    return shares
+
+def recover_secret(shares):
+    secret = 0
+    for j, (xj, yj) in enumerate(shares):
+        prod = 1
+        for m, (xm, _) in enumerate(shares):
+            if m != j:
+                prod *= xm * pow(xm - xj, -1, P)
+                prod %= P
+        secret += yj * prod
+        secret %= P
+    return secret
+
+secret = "KriptografiUPB2025"
+shares = split_secret(secret, 3, 5)
+print("Shares:", shares)
+
+recovered = recover_secret(shares[:3])
+print("Recovered secret:", recovered.to_bytes((recovered.bit_length()+7)//8,'big').decode())
+
 
 ---
 
 ## 6. Hasil dan Pembahasan
-(- Lampirkan screenshot hasil eksekusi program (taruh di folder `screenshots/`).  
-- Berikan tabel atau ringkasan hasil uji jika diperlukan.  
-- Jelaskan apakah hasil sesuai ekspektasi.  
-- Bahas error (jika ada) dan solusinya. 
 
-Hasil eksekusi program Caesar Cipher:
 
-![Hasil Eksekusi](screenshots/output.png)
-![Hasil Input](screenshots/input.png)
-![Hasil Output](screenshots/output.png)
-)
+![Hasil Eksekusi](screenshots/kriptoweek11.png)
+
 
 ---
 
 ## 7. Jawaban Pertanyaan
-(Jawab pertanyaan diskusi yang diberikan pada modul.  
-- Pertanyaan 1: …  
-- Pertanyaan 2: …  
-)
+1. SSS lebih aman karena satu bagian kunci tidak dapat mengungkapkan rahasia, berbeda dengan salinan kunci langsung yang bocor jika satu salinan diketahui.
+2. Threshold menentukan jumlah minimum share yang diperlukan untuk merekonstruksi rahasia; jika kurang dari k, rahasia tidak bisa diperoleh.
+3. SSS digunakan untuk menyimpan kunci master server perusahaan agar tidak dapat diakses oleh satu orang saja dan tetap aman jika sebagian pihak tidak tersedia.
 ---
 
 ## 8. Kesimpulan
-(Tuliskan kesimpulan singkat (2–3 kalimat) berdasarkan percobaan.  )
+Berdasarkan hasil pengujian, sistem berhasil membagi sebuah rahasia menjadi lima bagian (shares) dengan ambang batas tiga bagian menggunakan metode Shamir Secret Sharing. Proses rekonstruksi rahasia menunjukkan bahwa rahasia asli dapat dikembalikan secara utuh hanya dengan menggunakan tiga shares, sesuai dengan prinsip dasar algoritma Shamir Secret Sharing. Hal ini membuktikan bahwa implementasi algoritma berjalan dengan benar.
 
 ---
 
-## 9. Daftar Pustaka
-(Cantumkan referensi yang digunakan.  
-Contoh:  
-- Katz, J., & Lindell, Y. *Introduction to Modern Cryptography*.  
-- Stallings, W. *Cryptography and Network Security*.  )
 
----
 
 ## 10. Commit Log
-(Tuliskan bukti commit Git yang relevan.  
-Contoh:
-```
-commit abc12345
-Author: Nama Mahasiswa <email>
+
+Author: Nurita ahadhini <ahadininurita31@gmail.com>
 Date:   2025-09-20
 
-    week2-cryptosystem: implementasi Caesar Cipher dan laporan )
+    week11-secret-sharing
 ```
