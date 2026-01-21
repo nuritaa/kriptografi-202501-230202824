@@ -1,14 +1,17 @@
 # Laporan Praktikum Kriptografi
-Minggu ke-: X  
-Topik: [judul praktikum]  
-Nama: [Nama Mahasiswa]  
-NIM: [NIM Mahasiswa]  
-Kelas: [Kelas]  
+Minggu ke-: 15  
+Topik: tinycoin-erc20
+Nama: nurita ahadhini 
+NIM: 230202824 
+Kelas: 5IKRA
 
 ---
 
 ## 1. Tujuan
-(Tuliskan tujuan pembelajaran praktikum sesuai modul.)
+Mengembangkan proyek sederhana berbasis algoritma kriptografi.
+Mendokumentasikan proses implementasi proyek ke dalam repository Git.
+Menyusun laporan teknis hasil proyek akhir.
+
 
 ---
 
@@ -36,25 +39,21 @@ Contoh format:
 ---
 
 ## 5. Source Code
-(Salin kode program utama yang dibuat atau dimodifikasi.  
-Gunakan blok kode:
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
 
-```python
-# contoh potongan kode
-def encrypt(text, key):
-    return ...
-```
-)
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+
+contract TinyCoin is ERC20 {
+    constructor(uint256 initialSupply) ERC20("TinyCoin", "TNC") {
+        _mint(msg.sender, initialSupply);
+    }
+}
 
 ---
 
 ## 6. Hasil dan Pembahasan
-(- Lampirkan screenshot hasil eksekusi program (taruh di folder `screenshots/`).  
-- Berikan tabel atau ringkasan hasil uji jika diperlukan.  
-- Jelaskan apakah hasil sesuai ekspektasi.  
-- Bahas error (jika ada) dan solusinya. 
 
-Hasil eksekusi program Caesar Cipher:
 
 ![Hasil Eksekusi](screenshots/output.png)
 ![Hasil Input](screenshots/input.png)
@@ -71,25 +70,14 @@ Hasil eksekusi program Caesar Cipher:
 ---
 
 ## 8. Kesimpulan
-(Tuliskan kesimpulan singkat (2–3 kalimat) berdasarkan percobaan.  )
-
----
-
-## 9. Daftar Pustaka
-(Cantumkan referensi yang digunakan.  
-Contoh:  
-- Katz, J., & Lindell, Y. *Introduction to Modern Cryptography*.  
-- Stallings, W. *Cryptography and Network Security*.  )
+Implementasi TinyCoin ERC20 berhasil dilakukan dengan baik. Smart contract dapat dideploy, diuji, dan berfungsi sesuai standar ERC20. Dokumentasi dan bukti pengujian telah dilampirkan secara lengkap.
 
 ---
 
 ## 10. Commit Log
-(Tuliskan bukti commit Git yang relevan.  
-Contoh:
-```
-commit abc12345
-Author: Nama Mahasiswa <email>
+
+Author: Nurita ahadhini <ahadininurita31@gmail.com>
 Date:   2025-09-20
 
-    week2-cryptosystem: implementasi Caesar Cipher dan laporan )
+    week15-tinycoin-erc20
 ```
